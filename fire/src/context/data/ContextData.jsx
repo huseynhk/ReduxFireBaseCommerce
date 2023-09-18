@@ -15,9 +15,13 @@ const ContextDataProvider = ({ children }) => {
     }
   };
 
+  const [loading, setLoading] = useState(false)
+
   const contextValue = {
     mode,
     toggleMode,
+    loading,
+    setLoading
   };
 
   return (
