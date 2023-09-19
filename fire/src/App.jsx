@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Order from "./pages/order/Order";
 import Cart from "./pages/cart/Cart";
@@ -9,10 +9,12 @@ import SignUp from "./pages/registration/SignUp";
 import ProductInfo from "./pages/productInfo/ProductInfo";
 import AddProduct from "./pages/admin/page/AddProduct";
 import UpdateProduct from "./pages/admin/page/UpdateProduct";
+import AllProducts from "./pages/allProducts/AllProducts";
 import NoPage from "./pages/noPage/NoPage";
 import { ContextDataProvider } from "./context/data/ContextData";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 
 // import { useState, useEffect } from "react";
 // import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
@@ -67,7 +69,6 @@ function App() {
   //     );
   //   };
 
-  
   // const handleNewPush = () => {
   //    const newObj = {
   //      id: projects.length + 1,
@@ -116,14 +117,44 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/order" element={<Order />} />
+            <Route path="/allproducts" element={<AllProducts />} />
+
+            <Route
+              path="/order"
+              element={
+                <RouteForUser>
+                  <Order />
+                </RouteForUser>
+              }
+            />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard"
+              element={
+                <RouteForAdmin>
+                  <Dashboard />
+                </RouteForAdmin>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/productinfo/:id" element={<ProductInfo />} />
-            <Route path="/addproduct" element={<AddProduct />} />
-            <Route path="/updateproduct" element={<UpdateProduct />} />
+            <Route
+              path="/addproduct"
+              element={
+                <RouteForAdmin>
+                  <AddProduct />
+                </RouteForAdmin>
+              }
+            />
+            <Route
+              path="/updateproduct"
+              element={
+                <RouteForAdmin>
+                  <UpdateProduct />
+                </RouteForAdmin>
+              }
+            />
             <Route path="*" element={<NoPage />} />
           </Routes>
           <ToastContainer />
@@ -181,3 +212,21 @@ function App() {
 }
 
 export default App;
+
+export const RouteForUser = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    return children;
+  } else {
+    return <Navigate to={"/login"} />;
+  }
+};
+
+export const RouteForAdmin = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user && user.email === "khuseyn693@gmail.com") {
+    return children;
+  } else {
+    return <Navigate to={"/login"} />;
+  }
+};

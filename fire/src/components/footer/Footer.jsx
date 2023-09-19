@@ -119,9 +119,9 @@ const Footer = () => {
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.9150078816524!2d49.86868071142634!3d40.38857627132508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40307d17de5e3d1d%3A0x2da2edf637232eb3!2sRusel%20Plaza!5e0!3m2!1sen!2saz!4v1694956786023!5m2!1sen!2saz"
             style={{width:"290px" , height:"130px"}}
             className="rounded-lg"
-            allowfullscreen=""
+            allowFullScreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
           </div>
         </div>

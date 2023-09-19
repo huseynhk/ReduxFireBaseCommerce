@@ -1,15 +1,25 @@
 import React from "react";
 import { useContext, useState, Fragment } from "react";
-import { ContextData } from "../../context/data/ContextData"
+import { ContextData } from "../../context/data/ContextData";
 import { Link } from "react-router-dom";
 import { BsFillCloudSunFill } from "react-icons/bs";
 import { FiSun } from "react-icons/fi";
 import { Dialog, Transition } from "@headlessui/react";
 import { RxCross2 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
+
 
 const NavBar = () => {
   const { mode, toggleMode } = useContext(ContextData);
-  const [ open, setOpen ] = useState(false);
+  const [open, setOpen] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log(user.email)
+  const navigate = useNavigate();
+  const logoutUser = () => {
+    localStorage.clear("user");
+    navigate("/login");
+  };
+
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
@@ -53,54 +63,55 @@ const NavBar = () => {
                     <RxCross2 />
                   </button>
                 </div>
-                <div className="space-y-6 border-t border-red-600 px-4 py-6">
+                <div className="space-y-6 border-t border-red-600 px-4 py-6 flex items-center justify-center flex-col">
                   <Link
                     to={"/allproducts"}
-                    className="text-sm font-medium text-gray-900 "
+                    className="text-sm font-medium text-gray-700 "
                     style={{ color: mode === "dark" ? "white" : "" }}
                   >
                     All Products
                   </Link>
 
-                  <Link
-                    to={"/order"}
-                    style={{ color: mode === "dark" ? "white" : "" }}
-                    className="-m-2 block p-2 font-medium text-gray-900"
-                  >
-                    Order
-                  </Link>
+                  {user && (
+                    <a
+                      className="text-sm font-medium text-gray-700 ml-6"
+                      style={{ color: mode === "dark" ? "white" : "" }}
+                      onClick={logoutUser}
+                    >
+                      LogOut
+                    </a>
+                  )}
 
-                  <Link
-                    to={"/dashboard"}
-                    className="-m-2 block p-2 font-medium text-gray-900"
-                    style={{ color: mode === "dark" ? "white" : "" }}
-                  >
-                    admin
-                  </Link>
+                  {user && (
+                    <a
+                      to={"/order"}
+                      className="text-sm font-medium text-gray-700 ml-6"
+                      style={{ color: mode === "dark" ? "white" : "" }}
+                      onClick={logoutUser}
+                    >
+                      Order
+                    </a>
+                  )}
 
-                  <a
-                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
-                    style={{ color: mode === "dark" ? "white" : "" }}
-                  >
-                    Logout
-                  </a>
+                  {user?.email === "khuseyn693@gmail.com" && (
+                    <Link
+                      to={"/dashboard"}
+                      className="text-sm font-medium text-gray-700 ml-2"
+                      style={{ color: mode === "dark" ? "white" : "" }}
+                    >
+                      Admin
+                    </Link>
+                  )}
+
                   <Link
                     to={"/signup"}
-                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
+                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer ml-2"
                     style={{ color: mode === "dark" ? "white" : "" }}
                   >
                     Signup
                   </Link>
-                  <Link
-                    to={"/"}
-                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
-                  ></Link>
-                </div>
 
-                <div className="border-t border-red-600 px-4 py-6">
-                  <a href="#" className="-m-2 flex items-center p-2">
-                    <span className="sr-only">, change currency</span>
-                  </a>
+             
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -153,7 +164,7 @@ const NavBar = () => {
                       className=" text-2xl font-bold text-black  px-2 py-1 rounded"
                       style={{ color: mode === "dark" ? "white" : "" }}
                     >
-                     StoreAz
+                      StoreAz
                     </h1>
                   </div>
                 </Link>
@@ -169,17 +180,44 @@ const NavBar = () => {
                     All Products
                   </Link>
 
+                  {user && (
+                    <a
+                      className="text-sm font-medium text-gray-700 ml-6"
+                      style={{ color: mode === "dark" ? "white" : "" }}
+                      onClick={logoutUser}
+                    >
+                      LogOut
+                    </a>
+                  )}
+
+                  {user && (
+                    <a
+                      to={"/order"}
+                      className="text-sm font-medium text-gray-700 ml-6"
+                      style={{ color: mode === "dark" ? "white" : "" }}
+                    >
+                      Order
+                    </a>
+                  )}
+
+                  {user?.email === "khuseyn693@gmail.com" && (
+                    <Link
+                      to={"/dashboard"}
+                      className="text-sm font-medium text-gray-700 "
+                      style={{ color: mode === "dark" ? "white" : "" }}
+                    >
+                      Admin
+                    </Link>
+                  )}
 
                   <Link
-                    to={"/dashboard"}
-                    className="text-sm font-medium text-gray-700 "
+                    to={"/signup"}
+                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
                     style={{ color: mode === "dark" ? "white" : "" }}
                   >
-                    Admin
+                    Signup
                   </Link>
                 </div>
-
-     
 
                 <div className="flex lg:ml-8">
                   <button onClick={toggleMode}>
@@ -214,6 +252,8 @@ const NavBar = () => {
                         d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
                       />
                     </svg>
+
+             
 
                     <span
                       className="ml-2 text-sm font-medium text-gray-700 group-"

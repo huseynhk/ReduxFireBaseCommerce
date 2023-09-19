@@ -2,12 +2,14 @@ import React, { useContext } from "react";
 import { ContextData } from "../../../context/data/ContextData";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
-import { FaUser, FaCartPlus } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { BiSolidCartAdd } from "react-icons/bi";
 import { AiFillShopping, AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 
 const DashboardTab = () => {
-  const { mode } = useContext(ContextData);
+  const { mode, product, edithandle, deleteProduct } = useContext(ContextData);
+  console.log(product);
   const navigate = useNavigate();
   const addProductPage = () => {
     navigate("/addproduct");
@@ -63,7 +65,7 @@ const DashboardTab = () => {
                 <div className=" flex justify-end">
                   <button
                     type="button"
-                    className="focus:outline-none text-white bg-blue-500 shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-blue-700 outline-0 font-medium rounded-lg text-sm px-5 p-2 mb-2 mr-4"
+                    className="focus:outline-none text-white bg-blue-600  border hover:bg-blue-700 outline-0 font-medium rounded-lg text-sm py-2 px-4 m-6 transition duration-300 ease-in-out"
                     style={{
                       backgroundColor: mode === "dark" ? "rgb(45 50 55)" : "",
                       color: mode === "dark" ? "white" : "",
@@ -73,7 +75,7 @@ const DashboardTab = () => {
                       className="flex gap-2 items-center"
                       onClick={addProductPage}
                     >
-                      Add Product <FaCartPlus size={20} />
+                      Add Product <BiSolidCartAdd size={30} />
                     </div>
                   </button>
                 </div>
@@ -111,69 +113,81 @@ const DashboardTab = () => {
                       </tr>
                     </thead>
 
-                    <tbody>
-                      <tr
-                        className="bg-gray-50 border-b  dark:border-gray-700"
-                        style={{
-                          backgroundColor:
-                            mode === "dark" ? "rgb(45 50 55)" : "",
-                          color: mode === "dark" ? "white" : "",
-                        }}
-                      >
-                        <td
-                          className="px-6 py-4 text-black "
-                          style={{ color: mode === "dark" ? "white" : "" }}
-                        ></td>
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-black whitespace-nowrap"
-                        >
-                          <img className="w-16" alt="img" />
-                        </th>
-                        <td
-                          className="px-6 py-4 text-black "
-                          style={{ color: mode === "dark" ? "white" : "" }}
-                        >
-                          title
-                        </td>
-                        <td
-                          className="px-6 py-4 text-black "
-                          style={{ color: mode === "dark" ? "white" : "" }}
-                        >
-                          price
-                        </td>
-                        <td
-                          className="px-6 py-4 text-black "
-                          style={{ color: mode === "dark" ? "white" : "" }}
-                        >
-                          category
-                        </td>
-                        <td
-                          className="px-6 py-4 text-black "
-                          style={{ color: mode === "dark" ? "white" : "" }}
-                        >
-                          date
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className=" flex gap-2">
-                            <div
-                              className=" flex gap-2 cursor-pointer text-black "
+                    {product.map((item, index) => {
+                      return (
+                        <tbody className="">
+                          <tr
+                            className="bg-gray-50 border-b  dark:border-gray-700"
+                            style={{
+                              backgroundColor:
+                                mode === "dark" ? "rgb(46 49 55)" : "",
+                              color: mode === "dark" ? "white" : "",
+                            }}
+                          >
+                            <td
+                              className="px-6 py-4 text-black "
                               style={{ color: mode === "dark" ? "white" : "" }}
                             >
-                              <div className="text-2xl text-green-600">
-                                <AiFillPlusCircle />
-                              </div>
+                              {index + 1}.
+                            </td>
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-black whitespace-nowrap"
+                            >
+                              <img
+                                className="w-16"
+                                src={item.imageUrl}
+                                alt="img"
+                              />
+                            </th>
+                            <td
+                              className="px-6 py-4 text-black "
+                              style={{ color: mode === "dark" ? "white" : "" }}
+                            >
+                              {item.title}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-black "
+                              style={{ color: mode === "dark" ? "white" : "" }}
+                            >
+                              ${item.price}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-black "
+                              style={{ color: mode === "dark" ? "white" : "" }}
+                            >
+                              {item.category}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-black "
+                              style={{ color: mode === "dark" ? "white" : "" }}
+                            >
+                              {item.date}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className=" flex gap-2">
+                                <div
+                                  className=" flex gap-2 cursor-pointer text-black "
+                                  style={{
+                                    color: mode === "dark" ? "white" : "",
+                                  }}
+                                >
+                                  <div className="text-2xl text-red-500" onClick={() => deleteProduct(item)}>
+                                    <AiFillDelete />
+                                  </div>
 
-                              <Link to={"/updateproduct"}>
-                                <div className="text-2xl text-red-600">
-                                  <AiFillDelete />
+                                  <Link to={"/updateproduct"} onClick={() => edithandle(item)}>
+                                    <div className="text-2xl text-green-500">
+                                      <AiFillPlusCircle />
+                                    </div>
+                                  </Link>
                                 </div>
-                              </Link>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      );
+                    })}
                   </table>
                 </div>
               </div>
