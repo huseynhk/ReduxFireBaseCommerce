@@ -5,7 +5,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -37,6 +36,7 @@ const ContextDataProvider = ({ children }) => {
     imageUrl: null,
     category: null,
     description: null,
+    stock: null,
     time: Timestamp.now(),
     date: new Date().toLocaleString("en-US", {
       month: "short",
@@ -52,7 +52,8 @@ const ContextDataProvider = ({ children }) => {
       products.price == null ||
       products.imageUrl == null ||
       products.category == null ||
-      products.description == null
+      products.description == null ||
+      products.stock == null 
     ) {
       return toast.error("all fields are required");
     }
@@ -131,6 +132,9 @@ const ContextDataProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+
+  
 
   useEffect(() => {
     getProductData();

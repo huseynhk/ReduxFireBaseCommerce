@@ -62,6 +62,19 @@ const AddProduct = () => {
             />
           </div>
           <div>
+            <input
+              type="number"
+              value={products.stock}
+              onChange={(e) =>
+                setProducts({ ...products, stock: parseInt(e.target.value) })
+              }
+              name="stock"
+              className="bg-gray-600 mb-4 px-3 py-3 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
+              placeholder="Product stock"
+            />
+          </div>
+
+          <div>
             <textarea
               cols="30"
               rows="3"

@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { ContextData } from "../../context/data/ContextData";
 import Loader from "../../components/loader/Loader";
 import { toast } from "react-toastify";
-
+//Email
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../../firebase/FireBaseConfig";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
+//Google
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignUp = () => {
   const [newUser, setNewUser] = useState({
@@ -38,10 +40,10 @@ const SignUp = () => {
         email,
         password
       );
-      console.log(userCredential)
+      console.log(userCredential);
       const user = {
         name: name,
-        uid: userCredential.user.uid, 
+        uid: userCredential.user.uid,
         email: userCredential.user.email,
         time: Timestamp.now(),
       };
@@ -60,10 +62,25 @@ const SignUp = () => {
     }
   };
 
+  //Google
+  // const handleGoogleSignIn = async () => {
+  //   const provider = new GoogleAuthProvider();
+
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
+  //     console.log("Successfully signed in with Google:", user);
+  //   } catch (error) {
+  //     console.error("Google Sign-In Error:", error);
+  //   }
+  // };
+  
+
+  
   return (
     <>
       <div className=" flex justify-center items-center h-screen">
-      {loading && <Loader/>}
+        {loading && <Loader />}
         <div className="  bg-gray-900 px-16 py-10 rounded-lg">
           <div className="">
             <h1 className="text-center text-blue-200 text-xl mb-4 font-bold">
@@ -108,6 +125,12 @@ const SignUp = () => {
             >
               Signup
             </button>
+            {/* <button
+              className="bg-blue-500 w-full text-white font-bold px-4 py-4 rounded-lg text-xl"
+              onClick={handleGoogleSignIn}
+            >
+              Google
+            </button> */}
           </div>
           <div>
             <h2 className="text-white">

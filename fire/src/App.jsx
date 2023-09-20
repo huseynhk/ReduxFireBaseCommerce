@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Order from "./pages/order/Order";
 import Cart from "./pages/cart/Cart";
@@ -114,7 +114,7 @@ function App() {
   return (
     <>
       <ContextDataProvider>
-        <BrowserRouter>
+        
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/allproducts" element={<AllProducts />} />
@@ -158,7 +158,7 @@ function App() {
             <Route path="*" element={<NoPage />} />
           </Routes>
           <ToastContainer />
-        </BrowserRouter>
+      
       </ContextDataProvider>
 
       {/* <div className="App">

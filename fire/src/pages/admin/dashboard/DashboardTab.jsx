@@ -105,6 +105,9 @@ const DashboardTab = () => {
                           Category
                         </th>
                         <th scope="col" className="px-6 py-3">
+                          Stock
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                           Date
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -157,6 +160,12 @@ const DashboardTab = () => {
                               style={{ color: mode === "dark" ? "white" : "" }}
                             >
                               {item.category}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-black "
+                              style={{ color: mode === "dark" ? "white" : "" }}
+                            >
+                              {item.stock}
                             </td>
                             <td
                               className="px-6 py-4 text-black "

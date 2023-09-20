@@ -7,7 +7,7 @@ import { FiSun } from "react-icons/fi";
 import { Dialog, Transition } from "@headlessui/react";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 const NavBar = () => {
   const { mode, toggleMode } = useContext(ContextData);
@@ -19,6 +19,7 @@ const NavBar = () => {
     localStorage.clear("user");
     navigate("/login");
   };
+  const cartItems = useSelector((state) => state.persistedReducer.cart.basket);
 
   return (
     <>
@@ -110,8 +111,6 @@ const NavBar = () => {
                   >
                     Signup
                   </Link>
-
-             
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -253,13 +252,12 @@ const NavBar = () => {
                       />
                     </svg>
 
-             
-
                     <span
                       className="ml-2 text-sm font-medium text-gray-700 group-"
                       style={{ color: mode === "dark" ? "white" : "" }}
-                    ></span>
-                    <span className="sr-only">items in cart, view bag</span>
+                    >
+                      {cartItems.length}
+                    </span>
                   </Link>
                 </div>
               </div>

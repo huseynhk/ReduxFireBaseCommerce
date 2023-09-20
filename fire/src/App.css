@@ -5,3 +5,9 @@
     background-repeat: no-repeat;
     height: 92vh;
 }
+
+.cartImg{
+    max-height: 100px;
+    max-width: 100px;
+    object-fit: cover;
+}
