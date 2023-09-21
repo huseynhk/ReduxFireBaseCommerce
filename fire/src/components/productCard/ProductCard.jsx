@@ -1,21 +1,65 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ContextData } from "../../context/data/ContextData";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
 import { toast } from "react-toastify";
 
 const ProductCard = () => {
-  const { mode, product } = useContext(ContextData);
-  // const cartItems = useSelector((state) => state.persistedReducer.cart.basket);
-  // console.log(cartItems)
+  const { mode, product, searchkey, filterType, sortTitle } =
+    useContext(ContextData);
   const dispatch = useDispatch();
 
-  const addForCart = (product) => {
-    dispatch(addToCart({ ...product, price: Number(product.price), amount: 1 }));
-    console.log(product)
-    toast.success("add to cart");
+  // const filteredProduct = product.filter((pr) => {
+  //   return (
+  //     pr.title.toLowerCase().includes(searchkey) ||
+  //     pr.category.toLowerCase().includes(filterType)
+  //   );
+  // });
+
+  const filteredProduct = product
+    .filter((pr) => pr.title.toLowerCase().includes(searchkey))
+    .filter((pr) => pr.category.toLowerCase().includes(filterType));
+  const [sortedProducts, setSortedProducts] = useState(filteredProduct);
+
+  const sortProducts = () => {
+    switch (sortTitle) {
+      case "price-low-to-high":
+        setSortedProducts(
+          [...filteredProduct].sort((a, b) => a.price - b.price)
+        );
+        break;
+      case "price-high-to-low":
+        setSortedProducts(
+          [...filteredProduct].sort((a, b) => b.price - a.price)
+        );
+        break;
+      case "name-a-to-z":
+        setSortedProducts(
+          [...filteredProduct].sort((a, b) => a.title.localeCompare(b.title))
+        );
+        break;
+      case "name-z-to-a":
+        setSortedProducts(
+          [...filteredProduct].sort((a, b) => b.title.localeCompare(a.title))
+        );
+        break;
+      default:
+        setSortedProducts([...filteredProduct]);
+        break;
+    }
   };
 
+  useEffect(() => {
+    sortProducts();
+  }, [sortTitle, filteredProduct]);
+
+  const addForCart = (product) => {
+    dispatch(
+      addToCart({ ...product, price: Number(product.price), amount: 1 })
+    );
+    console.log(product);
+    toast.success("Product is adding to cart");
+  };
 
   return (
     <>
@@ -32,7 +76,7 @@ const ProductCard = () => {
           </div>
 
           <div className="flex flex-wrap -m-4">
-            {product.map((item, index) => (
+            {sortedProducts.map((item, index) => (
               <div className="p-4 md:w-1/4  drop-shadow-lg" key={index}>
                 <div
                   className="h-full border-2 hover:shadow-gray-100 hover:shadow-2xl transition-shadow duration-300 ease-in-out    border-gray-200 border-opacity-60 rounded-2xl overflow-hidden"

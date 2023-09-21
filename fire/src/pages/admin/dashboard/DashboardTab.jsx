@@ -8,7 +8,8 @@ import { AiFillShopping, AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 
 const DashboardTab = () => {
-  const { mode, product, edithandle, deleteProduct } = useContext(ContextData);
+  const { mode, product, edithandle, deleteProduct, user } =
+    useContext(ContextData);
   console.log(product);
   const navigate = useNavigate();
   const addProductPage = () => {
@@ -181,11 +182,17 @@ const DashboardTab = () => {
                                     color: mode === "dark" ? "white" : "",
                                   }}
                                 >
-                                  <div className="text-2xl text-red-500" onClick={() => deleteProduct(item)}>
+                                  <div
+                                    className="text-2xl text-red-500"
+                                    onClick={() => deleteProduct(item)}
+                                  >
                                     <AiFillDelete />
                                   </div>
 
-                                  <Link to={"/updateproduct"} onClick={() => edithandle(item)}>
+                                  <Link
+                                    to={"/updateproduct"}
+                                    onClick={() => edithandle(item)}
+                                  >
                                     <div className="text-2xl text-green-500">
                                       <AiFillPlusCircle />
                                     </div>
@@ -391,36 +398,42 @@ const DashboardTab = () => {
                   </thead>
 
                   <tbody>
-                    <tr
-                      className="bg-gray-50 border-b  dark:border-gray-700"
-                      style={{
-                        backgroundColor: mode === "dark" ? "rgb(45 50 55)" : "",
-                        color: mode === "dark" ? "white" : "",
-                      }}
-                    >
-                      <td
-                        className="px-6 py-4 text-black "
-                        style={{ color: mode === "dark" ? "white" : "" }}
-                      ></td>
-                      <td
-                        className="px-6 py-4 text-black "
-                        style={{ color: mode === "dark" ? "white" : "" }}
+                    {user.map((item, index) => (
+                      <tr
+                        className="bg-gray-50 border-b  dark:border-gray-700"
+                        style={{
+                          backgroundColor:
+                            mode === "dark" ? "rgb(45 50 55)" : "",
+                          color: mode === "dark" ? "white" : "",
+                        }}
+                        key={index}
                       >
-                        name
-                      </td>
-                      <td
-                        className="px-6 py-4 text-black "
-                        style={{ color: mode === "dark" ? "white" : "" }}
-                      >
-                        email
-                      </td>
-                      <td
-                        className="px-6 py-4 text-black "
-                        style={{ color: mode === "dark" ? "white" : "" }}
-                      >
-                        id
-                      </td>
-                    </tr>
+                        <td
+                          className="px-6 py-4 text-black "
+                          style={{ color: mode === "dark" ? "white" : "" }}
+                        >
+                          {index + 1}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-black "
+                          style={{ color: mode === "dark" ? "white" : "" }}
+                        >
+                          {item.name}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-black "
+                          style={{ color: mode === "dark" ? "white" : "" }}
+                        >
+                          {item.email}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-black "
+                          style={{ color: mode === "dark" ? "white" : "" }}
+                        >
+                         {item.uid}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

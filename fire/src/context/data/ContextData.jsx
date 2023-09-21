@@ -9,6 +9,7 @@ import {
   orderBy,
   query,
   setDoc,
+  getDocs,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { fireDB } from "../../firebase/FireBaseConfig";
@@ -53,7 +54,7 @@ const ContextDataProvider = ({ children }) => {
       products.imageUrl == null ||
       products.category == null ||
       products.description == null ||
-      products.stock == null 
+      products.stock == null
     ) {
       return toast.error("all fields are required");
     }
@@ -133,11 +134,35 @@ const ContextDataProvider = ({ children }) => {
     }
   };
 
+  //USER
+  const [user, setUser] = useState([]);
+  const getUserData = async () => {
+    setLoading(true);
+    try {
+      const result = await getDocs(collection(fireDB, "users"));
+      const userArray = [];
+      result.forEach((user) => {
+        userArray.push(user.data());
+        setLoading(false);
+      });
+      setUser(userArray);
+      console.log(userArray);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
-  
+  //FILTER
+  const [searchkey, setSearchkey] = useState("");
+  const [filterType, setFilterType] = useState("");
+  //SORT
+  const [sortTitle, setSortTitle] = useState("");
 
   useEffect(() => {
     getProductData();
+    getUserData();
   }, []);
 
   const contextValue = {
@@ -152,6 +177,13 @@ const ContextDataProvider = ({ children }) => {
     edithandle,
     updateProduct,
     deleteProduct,
+    user,
+    searchkey,
+    setSearchkey,
+    filterType,
+    setFilterType,
+    sortTitle,
+    setSortTitle,
   };
 
   return (
