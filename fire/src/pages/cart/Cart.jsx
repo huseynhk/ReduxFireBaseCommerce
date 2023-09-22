@@ -9,7 +9,6 @@ import { AiFillDelete } from "react-icons/ai";
 import {
   increament,
   decrement,
-  applyDiscountPrice,
 } from "../../redux/cartSlice";
 
 const Cart = () => {
@@ -18,14 +17,17 @@ const Cart = () => {
   const totalPrice = useSelector(
     (state) => state.persistedReducer.cart.totalPrice
   );
-  console.log(totalPrice)
+  console.log(totalPrice);
   const dispatch = useDispatch();
   const [discountCode, setDiscountCode] = useState("");
   const [discountApplied, setDiscountApplied] = useState(false);
+  const [subTotal, setSubTotal] = useState("");
 
   const applyDiscount = () => {
     if (!discountApplied && discountCode === "gs1905") {
-      dispatch(applyDiscountPrice(0.2));
+      setSubTotal((prevState) =>
+        Number(prevState - prevState * 0.2).toFixed(2)
+      );
       setDiscountApplied(true);
     } else {
       toast.error("Invalid discount code");
@@ -34,13 +36,13 @@ const Cart = () => {
 
   const deleteForCart = (item) => {
     dispatch(deleteFromCart(item));
+
     toast.success("Delete cart");
   };
 
-//  useEffect (() => {
-//   applyDiscount()
-//  },[])
-
+  useEffect(() => {
+    setSubTotal(totalPrice);
+  }, []);
 
   return (
     <Layout>
@@ -133,7 +135,7 @@ const Cart = () => {
                 className="text-gray-700"
                 style={{ color: mode === "dark" ? "white" : "" }}
               >
-                Subtotal: $ {totalPrice}
+                Subtotal: $ {subTotal}
               </p>
               <p
                 className="text-gray-700"
@@ -153,7 +155,7 @@ const Cart = () => {
               className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 
               border-b-4 border-green-800 mt-2 hover:border-green-500 rounded"
               onClick={applyDiscount}
-              disabled={discountApplied} 
+              disabled={discountApplied}
             >
               Get Discount
             </button>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ContextData } from "../../context/data/ContextData";
 import Loader from "../../components/loader/Loader";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
@@ -63,22 +64,23 @@ const SignUp = () => {
   };
 
   //Google
-  // const handleGoogleSignIn = async () => {
-  //   const provider = new GoogleAuthProvider();
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Successfully signed in with Google:", user);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Ugurla giris oldu");
+      setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      toast.error(`Google Sign-In Error:, ${error}`);
+    }
+  };
 
-  //   try {
-  //     const result = await signInWithPopup(auth, provider);
-  //     const user = result.user;
-  //     console.log("Successfully signed in with Google:", user);
-  //   } catch (error) {
-  //     console.error("Google Sign-In Error:", error);
-  //   }
-  // };
-  
-
-  
   return (
     <>
+  
       <div className=" flex justify-center items-center h-screen">
         {loading && <Loader />}
         <div className="  bg-gray-900 px-16 py-10 rounded-lg">
@@ -125,12 +127,12 @@ const SignUp = () => {
             >
               Signup
             </button>
-            {/* <button
+            <button
               className="bg-blue-500 w-full text-white font-bold px-4 py-4 rounded-lg text-xl"
               onClick={handleGoogleSignIn}
             >
               Google
-            </button> */}
+            </button>
           </div>
           <div>
             <h2 className="text-white">

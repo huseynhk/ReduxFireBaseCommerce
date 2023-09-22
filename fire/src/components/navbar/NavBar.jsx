@@ -60,18 +60,12 @@ const NavBar = () => {
                     className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-red-800"
                     onClick={() => setOpen(false)}
                   >
-                    <span className="sr-only">Close menu</span>
+                    <span className="sr-only text;2xl">Close menu</span>
                     <RxCross2 />
                   </button>
                 </div>
                 <div className="space-y-6 border-t border-red-600 px-4 py-6 flex items-center justify-center flex-col">
-                  <Link
-                    to={"/allproducts"}
-                    className="text-sm font-medium text-gray-700 "
-                    style={{ color: mode === "dark" ? "white" : "" }}
-                  >
-                    All Products
-                  </Link>
+           
 
                   {user && (
                     <a
@@ -171,13 +165,7 @@ const NavBar = () => {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <Link
-                    to={"/allproducts"}
-                    className="text-sm font-medium text-gray-700 "
-                    style={{ color: mode === "dark" ? "white" : "" }}
-                  >
-                    All Products
-                  </Link>
+       
 
                   {user && (
                     <a

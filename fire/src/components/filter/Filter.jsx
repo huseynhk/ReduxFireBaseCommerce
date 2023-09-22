@@ -12,6 +12,14 @@ const Filter = () => {
     setSortTitle,
     product,
   } = useContext(ContextData);
+  const uniqueCategories = [...new Set(product.map((item) => item.category))];
+
+  const resetFilter = () => {
+    setSearchkey("")
+    setFilterType(""); 
+    setSortTitle("");  
+  };
+
   return (
     <>
       <div className=" container mx-auto px-4 mt-5 ">
@@ -50,10 +58,11 @@ const Filter = () => {
           <div className="flex items-center justify-between mt-4">
             <p className="font-medium">Filters</p>
             <button
-              className="px-4 py-2 bg-gray-50hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md"
+              className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-lg rounded-lg"
               style={{ color: mode === "dark" ? "white" : "" }}
+              onClick={resetFilter}
             >
-              Reset Filter
+              Reset
             </button>
           </div>
           <div>
@@ -67,10 +76,10 @@ const Filter = () => {
                   color: mode === "dark" ? "white" : "",
                 }}
               >
-                {product.map((item, index) => {
+                {uniqueCategories.map((category, index) => {
                   return (
-                    <option key={index} value={item.category}>
-                      {item.category}
+                    <option key={index} value={category}>
+                      {category}
                     </option>
                   );
                 })}

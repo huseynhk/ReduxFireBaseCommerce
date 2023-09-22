@@ -5,7 +5,6 @@ const initialState = {
   totalAmount: 0,
   amount: 0,
   totalPrice: 0,
-  filteredBasket: [],
 };
 
 const cartSlice = createSlice({
@@ -33,8 +32,10 @@ const cartSlice = createSlice({
         state.basket = state.basket.filter(
           (product) => product.id !== action.payload.id
         );
+        
         state.totalAmount -= isExist.amount;
-        state.totalPrice -= isExist.totalPrice;
+        state.totalPrice -= Number(isExist.price * isExist.amount);
+       
       }
     },
 
@@ -68,21 +69,21 @@ const cartSlice = createSlice({
 
     // applyDiscountPrice: (state, action) => {
     //   state.basket.forEach((product) => {product.price *= (1 - action.payload)});
+    // // },
+
+    // applyDiscountPrice: (state, action) => {
+    //   const totalDiscount = state.basket.reduce((discount, product) => {
+    //     const discountedPrice = product.price * (1 - action.payload);
+    //     const discountAmount = product.price - discountedPrice;
+    //     return discount + discountAmount;
+    //   }, 0);
+
+    //   state.basket.forEach((product) => {
+    //     product.price = Math.round(product.price * (1 - action.payload));
+    //   });
+
+    //   state.totalPrice = Math.round(state.totalPrice - totalDiscount);
     // },
-
-    applyDiscountPrice: (state, action) => {
-      const totalDiscount = state.basket.reduce((discount, product) => {
-        const discountedPrice = product.price * (1 - action.payload);
-        const discountAmount = product.price - discountedPrice;
-        return discount + discountAmount;
-      }, 0);
-
-      state.basket.forEach((product) => {
-        product.price = Math.round(product.price * (1 - action.payload));
-      });
-
-      state.totalPrice = Math.round(state.totalPrice - totalDiscount);
-    },
   },
 });
 

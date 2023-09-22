@@ -9,7 +9,6 @@ import SignUp from "./pages/registration/SignUp";
 import ProductInfo from "./pages/productInfo/ProductInfo";
 import AddProduct from "./pages/admin/page/AddProduct";
 import UpdateProduct from "./pages/admin/page/UpdateProduct";
-import AllProducts from "./pages/allProducts/AllProducts";
 import NoPage from "./pages/noPage/NoPage";
 import { ContextDataProvider } from "./context/data/ContextData";
 import { ToastContainer } from "react-toastify";
@@ -117,7 +116,6 @@ function App() {
         
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/allproducts" element={<AllProducts />} />
 
             <Route
               path="/order"

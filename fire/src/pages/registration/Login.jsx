@@ -3,7 +3,7 @@ import { ContextData } from "../../context/data/ContextData";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/Loader";
 import { toast } from "react-toastify";
-
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/FireBaseConfig";
 
@@ -28,8 +28,12 @@ const Login = () => {
     const { email, password } = newUser;
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user; 
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
       toast.success("Login successful", {
         position: "top-right",
         autoClose: 1500,
@@ -43,10 +47,23 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
       setLoading(false);
-    }
-     catch (error) {
+    } catch (error) {
       console.log(error);
       setLoading(loading);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Successfully signed in with Google:", user);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Ugurla giris oldu");
+      setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      toast.error(`Google Sign-In Error:, ${error}`);
     }
   };
 
@@ -81,7 +98,10 @@ const Login = () => {
             />
           </div>
           <div className=" flex justify-center mb-3">
-            <button className=" bg-orange-400 w-full text-black font-bold  px-4 py-4 rounded-lg" onClick={LoginUser}>
+            <button
+              className=" bg-orange-400 w-full text-black font-bold  px-4 py-4 rounded-lg"
+              onClick={LoginUser}
+            >
               <span className="text-blue-200 text-lg">Login</span>
             </button>
           </div>
@@ -90,6 +110,13 @@ const Login = () => {
               <span className=" text-blue-200 ml-1">
                 You do not have an account
               </span>
+              <button
+                className="bg-blue-500 w-full text-white font-bold px-4 py-4 rounded-lg text-xl"
+                onClick={handleGoogleSignIn}
+              >
+                Google
+              </button>
+
               <Link
                 className=" text-orange-600 font-bold ml-3 text-xl"
                 to={"/signup"}

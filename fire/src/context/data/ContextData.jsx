@@ -87,6 +87,7 @@ const ContextDataProvider = ({ children }) => {
         QuerySnapshot.forEach((doc) => {
           productArray.push({ ...doc.data(), id: doc.id });
         });
+        console.log(productArray);
         setProduct(productArray);
         setLoading(false);
       });
